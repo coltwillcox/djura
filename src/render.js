@@ -26,9 +26,16 @@ float bayer4(vec2 p) {
 }
 
 float quant(float v, float d) {
-  // vrednost u 0..7 prostor, dither, pa mapiranje na nelinearni DAC
-  float s = clamp(v * 7.0 + d * 0.9, 0.0, 7.0);
-  int idx = int(floor(s + 0.5));
+  // pozicija između nelinearnih DAC nivoa (0..7), dither, pa zaokruživanje.
+  // Tačna boja palete pada tačno na nivo i dither je ne pomera.
+  float f = 7.0;
+  for (int k = 0; k < 7; k++) {
+    if (v <= uLevels[k + 1]) {
+      f = float(k) + clamp((v - uLevels[k]) / (uLevels[k + 1] - uLevels[k]), 0.0, 1.0);
+      break;
+    }
+  }
+  int idx = int(clamp(floor(f + d * 0.9 + 0.5), 0.0, 7.0));
   return uLevels[idx];
 }
 

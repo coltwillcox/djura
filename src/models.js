@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { C } from './palette.js';
+import { drawPixelText } from './pixelfont.js';
 
 // Svi modeli su od kutija i valjaka — low-poly, kao da je 1993.
 const matCache = new Map();
@@ -257,23 +258,21 @@ export function makeMoney() {
   return g;
 }
 
-export function makeTextSign(text, w, h, bg = '#0024a0', fg = '#ffff00') {
-  // natpis iz canvas teksture, mali pikselni font
-  const cv = document.createElement('canvas');
-  cv.width = Math.max(32, text.length * 10 + 8);
-  cv.height = 16;
-  const x = cv.getContext('2d');
-  x.fillStyle = bg;
-  x.fillRect(0, 0, cv.width, cv.height);
-  x.fillStyle = fg;
-  x.font = 'bold 12px "Pixelify Sans", monospace';
-  x.textAlign = 'center';
-  x.textBaseline = 'middle';
-  x.fillText(text, cv.width / 2, 8.5);
+/**
+ * Natpis pikselnim fontom. lines: string ili [{ text, color }].
+ * texel = veličina jednog piksela fonta u svetu; ~0.1 daje oko 1-2 piksela na ekranu.
+ * Boje treba da budu tačne boje palete (mdCss), da ih šejder ne ditheruje.
+ */
+export function makeTextSign(lines, { bg, fg, border, texel = 0.1, pad = 2, align } = {}) {
+  const ls = typeof lines === 'string' ? [{ text: lines, color: fg }] : lines.map((l) => ({ color: fg, ...l }));
+  const cv = drawPixelText(ls, { bg, border, pad, align });
   const tex = new THREE.CanvasTexture(cv);
   tex.magFilter = THREE.NearestFilter;
   tex.minFilter = THREE.NearestFilter;
+  tex.generateMipmaps = false;
   tex.colorSpace = THREE.SRGBColorSpace;
+  const w = cv.width * texel, h = cv.height * texel;
   const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: tex }));
+  m.userData.size = { w, h };
   return m;
 }

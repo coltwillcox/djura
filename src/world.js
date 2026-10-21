@@ -40,7 +40,7 @@ export class World {
       { name: 'šalter', x: 10, z: 5.3 },
       { name: 'klupa', x: -5.5, z: -2.4 },
       { name: 'klupa', x: 5.5, z: -2.4 },
-      { name: 'tabla', x: 0, z: 2 },
+      { name: 'tabla', x: -5.5, z: -6.0 },
     ];
   }
 
@@ -109,12 +109,31 @@ export class World {
       box(0.2, 2.2, 0.5, C.gray, gt.x - 0.9, 1.1, WALL_Z + 1.2, g);
       box(0.2, 2.2, 0.5, C.gray, gt.x + 0.9, 1.1, WALL_Z + 1.2, g);
       box(2.0, 0.25, 0.5, C.gray, gt.x, 2.25, WALL_Z + 1.2, g);
-      const sign = makeTextSign(`IZLAZ ${gt.id}`, 2.6, 0.6, mdCss(0, 1, 5), mdCss(7, 7, 0));
-      sign.position.set(gt.x, 3.6, WALL_Z + 0.05);
+      // natpisi su nagnuti ka kameri, inače bi na 224 linije bili spljošteni
+      const sign = makeTextSign([{ text: `IZLAZ ${gt.id}`, color: mdCss(7, 7, 0) }, { text: gt.dest, color: mdCss(7, 4, 0) }],
+        { bg: mdCss(0, 0, 3), border: mdCss(7, 7, 7), texel: 0.08 });
+      sign.position.set(gt.x, 3.2 + sign.userData.size.h / 2, WALL_Z + 0.4);
+      sign.rotation.x = -0.5;
       g.add(sign);
-      const dest = makeTextSign(gt.dest, 2.6, 0.5, mdCss(0, 0, 0), mdCss(7, 4, 0));
-      dest.position.set(gt.x, 4.15, WALL_Z + 0.05);
-      g.add(dest);
+    }
+
+    // ekrani sa letovima na staklu između izlaza
+    const boards = [
+      { x: -5.5, title: 'POLASCI', rows: ['KIPAR    ODLAZI', 'DUBAI    KASNI', 'ZEMUN    OTKAZAN'] },
+      { x: 5.5, title: 'DOLASCI', rows: ['PARIZ    KASNI', 'SOFIJA   SLETEO', 'KAJMANI  ?'] },
+    ];
+    for (const bd of boards) {
+      const s = makeTextSign([
+        { text: bd.title, color: mdCss(7, 7, 7) },
+        ...bd.rows.map((r) => ({ text: r, color: mdCss(7, 6, 0) })),
+      ], { bg: mdCss(0, 0, 0), border: mdCss(4, 4, 4), texel: 0.07, align: 'left' });
+      const { h } = s.userData.size;
+      s.position.set(bd.x, 0.4 + h / 2, WALL_Z + 1.1);
+      s.rotation.x = -0.45;
+      g.add(s);
+      box(0.15, 0.6, 0.15, C.grayD, bd.x - 1.5, 0.3, WALL_Z + 1.4, g);
+      box(0.15, 0.6, 0.15, C.grayD, bd.x + 1.5, 0.3, WALL_Z + 1.4, g);
+      this.addObstacle(bd.x, WALL_Z + 0.9, 3.3, 0.7);
     }
 
     // južni zid sa vratima (nizak, da ne zaklanja kameru)
@@ -126,8 +145,8 @@ export class World {
     }
     for (const d of DOORS) {
       box(2.8, 0.03, 1.2, C.grayD, d, 0.02, 14.6, g);
-      const s = makeTextSign('ULAZ', 1.6, 0.4, mdCss(0, 4, 0), mdCss(7, 7, 7));
-      s.position.set(d, 1.2, 15.15);
+      const s = makeTextSign('ULAZ', { bg: mdCss(0, 4, 0), fg: mdCss(7, 7, 7) });
+      s.position.set(d, 1.3, 15.15);
       s.rotation.x = -0.6;
       g.add(s);
     }
@@ -141,13 +160,13 @@ export class World {
       box(8, 1.0, 1.0, C.wood, cx, 0.5, 3.5, g);
       box(8.1, 0.12, 1.1, C.grayL, cx, 1.05, 3.5, g);
       box(8, 0.5, 0.8, C.black, cx, 0.25, 2.6, g); // traka za prtljag
-      for (let i = 0; i < 4; i++) {
-        const n = (side < 0 ? 1 : 5) + i;
-        const s = makeTextSign(`ŠALTER ${n}`, 1.7, 0.4, mdCss(0, 1, 5), mdCss(7, 7, 7));
-        s.position.set(cx - 3 + i * 2, 1.9, 3.6);
-        g.add(s);
-        box(0.1, 0.7, 0.1, C.gray, cx - 3 + i * 2, 1.4, 3.6, g);
-      }
+      const s = makeTextSign(side < 0 ? 'ČEKIRANJE 1-4' : 'ČEKIRANJE 5-8',
+        { bg: mdCss(0, 1, 5), fg: mdCss(7, 7, 7), border: mdCss(7, 7, 7), texel: 0.08 });
+      s.position.set(cx, 2.5, 3.6);
+      s.rotation.x = -0.6;
+      g.add(s);
+      box(0.1, 1.4, 0.1, C.gray, cx - 2.5, 1.7, 3.6, g);
+      box(0.1, 1.4, 0.1, C.gray, cx + 2.5, 1.7, 3.6, g);
       this.addObstacle(cx, 3.2, 4, 0.9);
     }
 
@@ -178,8 +197,9 @@ export class World {
     box(4, 2.2, 3, C.blue, -15.8, 1.1, 10.3, g);
     box(4.2, 0.2, 3.4, C.red, -15.8, 2.3, 10.4, g);
     box(2.6, 0.8, 0.1, C.yellow, -15.8, 1.3, 11.85, g);
-    const tr = makeTextSign('TRAFIKA', 2.6, 0.5, mdCss(7, 0, 0), mdCss(7, 7, 7));
-    tr.position.set(-15.8, 2.7, 11.9);
+    const tr = makeTextSign('TRAFIKA', { bg: mdCss(7, 0, 0), fg: mdCss(7, 7, 7), texel: 0.08 });
+    tr.position.set(-15.8, 2.9, 11.9);
+    tr.rotation.x = -0.5;
     g.add(tr);
     this.addObstacle(-15.8, 10.3, 2, 1.5);
 
@@ -187,27 +207,16 @@ export class World {
     box(4, 2.2, 3, C.wood, 15.8, 1.1, 10.3, g);
     box(4.2, 0.2, 3.4, C.orange, 15.8, 2.3, 10.4, g);
     for (let i = 0; i < 4; i++) cyl(0.25, 0.25, 0.1, C.gold, 8, 14.6 + i * 0.6, 1.25, 11.9, g);
-    const pk = makeTextSign('PEKARA BUREK', 3.2, 0.5, mdCss(7, 5, 0), mdCss(2, 1, 0));
-    pk.position.set(15.8, 2.7, 11.9);
+    const pk = makeTextSign([{ text: 'PEKARA' }, { text: 'BUREK' }], { bg: mdCss(7, 5, 0), fg: mdCss(2, 1, 0), texel: 0.08 });
+    pk.position.set(15.8, 3.2, 11.9);
+    pk.rotation.x = -0.5;
     g.add(pk);
     this.addObstacle(15.8, 10.3, 2, 1.5);
 
-    // tabla sa letovima
-    box(5, 1.6, 0.3, C.black, 0, 3.2, -0.2, g);
-    box(0.2, 2.4, 0.2, C.gray, -2, 1.2, -0.2, g);
-    box(0.2, 2.4, 0.2, C.gray, 2, 1.2, -0.2, g);
-    const rows = ['KIPAR    ODLAZAK', 'DUBAI    ODLAZAK', 'PANAMA   KASNI', 'ZEMUN    OTKAZAN'];
-    rows.forEach((r, i) => {
-      const s = makeTextSign(r, 4.6, 0.32, mdCss(0, 0, 0), mdCss(7, 6, 0));
-      s.position.set(0, 3.75 - i * 0.37, -0.04);
-      g.add(s);
-    });
-    this.addObstacle(-2, -0.2, 0.2, 0.2);
-    this.addObstacle(2, -0.2, 0.2, 0.2);
-
     // veliki natpis
-    const title = makeTextSign('AERODROM BEOGRAD', 10, 1.0, mdCss(0, 0, 3), mdCss(7, 7, 7));
-    title.position.set(0, 5.3, WALL_Z - 0.3);
+    const title = makeTextSign('AERODROM BEOGRAD', { bg: mdCss(0, 0, 3), fg: mdCss(7, 7, 7), texel: 0.15 });
+    title.position.set(0, 6.6, WALL_Z - 0.3);
+    title.rotation.x = -0.3;
     g.add(title);
   }
 
@@ -270,7 +279,7 @@ export class World {
       const sw = makeSwitch(colors[i]);
       sw.root.position.set(p.x, 0, p.z);
       this.group.add(sw.root);
-      const sign = makeTextSign(`RAMPA ${GATES[i].id}`, 1.8, 0.4, mdCss(0, 0, 0), mdCss(7, 7, 0));
+      const sign = makeTextSign(`RAMPA ${GATES[i].id}`, { bg: mdCss(0, 0, 0), fg: mdCss(7, 7, 0), border: mdCss(7, 7, 7), texel: 0.07 });
       sign.position.set(0, 2.6, 0);
       sign.rotation.x = -0.7;
       sw.root.add(sign);
