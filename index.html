@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="sr-Latn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="theme-color" content="#000000" />
+  <title>Đura, blokiraj aerodrom!</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'><rect width='8' height='8' fill='%23000'/><rect x='1' y='1' width='6' height='2' fill='%230024a0'/><rect x='3' y='1' width='2' height='1' fill='%23ffae00'/><rect x='1' y='3' width='6' height='4' fill='%23ffae74'/><rect x='2' y='4' width='1' height='1' fill='%23000'/><rect x='5' y='4' width='1' height='1' fill='%23000'/><rect x='2' y='6' width='4' height='1' fill='%23340000'/></svg>" />
+</head>
+<body>
+  <div id="game">
+    <canvas id="view"></canvas>
+
+    <div id="overlay">
+      <div id="bubbles"></div>
+      <div id="arrows"></div>
+
+      <div id="hud">
+        <div class="hud-top">
+          <div class="hud-block">
+            <div id="h-level">NIVO 1</div>
+            <div class="score" id="h-score">000000</div>
+          </div>
+          <div class="hud-block counters">
+            <div><span class="lbl">UHAPŠENO</span> <span id="h-arrests" class="yel">0/0</span></div>
+            <div><span class="lbl">POBEGLO</span> <span id="h-escapes" class="red">0/3</span></div>
+            <div><span class="lbl">ŽALBE</span> <span id="h-complaints" class="cya">0/3</span></div>
+          </div>
+        </div>
+        <div id="h-boss">
+          <div id="h-boss-name">BOS</div>
+          <div id="h-boss-hp"></div>
+          <div id="h-boss-state"></div>
+        </div>
+        <div class="hud-bottom">
+          <div class="lbl">KONDICIJA</div>
+          <div class="bar"><div id="h-stamina"></div></div>
+          <div><span class="lbl">PIŠTALJKA</span> x<span id="h-whistles">1</span> <span id="h-boost">BUREK!</span></div>
+          <div id="h-combo"></div>
+        </div>
+      </div>
+
+      <div id="feed"></div>
+      <div id="banner"></div>
+
+      <div id="dialog">
+        <div class="d-portrait"></div>
+        <div class="d-body">
+          <div class="d-name">NAČELNIK</div>
+          <div class="d-text"></div>
+          <div class="d-next">▼</div>
+        </div>
+      </div>
+
+      <div id="screen"></div>
+    </div>
+  </div>
+
+  <div id="touch">
+    <div id="stick"><div id="knob"></div></div>
+    <div class="t-buttons">
+      <button data-action="whistle" class="t-btn small">PIŠT.</button>
+      <button data-action="sprint" class="t-btn small">TRČI</button>
+      <button data-action="arrest" class="t-btn big">HAPSI</button>
+    </div>
+    <button data-action="pause" class="t-btn pause">II</button>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
