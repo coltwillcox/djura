@@ -23,10 +23,10 @@ export const LEVELS = [
     civilians: 10, maxEscapes: 3, speed: 1.05,
   },
   {
-    name: 'Kum Ofšor',
+    name: 'Kum {kum}',
     boss: 'ofsor',
     briefing: [
-      'ĐURO! Kum Ofšor je krenuo ka aerodromu sa tri kofera para!',
+      'ĐURO! Kum {kum} je krenuo ka aerodromu sa tri kofera para!',
       'Ne možeš ga uhapsiti dok je aerodrom otvoren. Ima on veze.',
       'Stani na crvene, žute i plave prekidače da spustiš rampe.',
       'Đuro... BLOKIRAJ AERODROM!',
@@ -69,7 +69,7 @@ export const LEVELS = [
 
 export const BOSSES = {
   ofsor: {
-    name: 'Kum Ofšor',
+    name: 'Kum {kum}',
     hp: 3, speed: 2.7, panicSpeed: 3.4, reopen: 18, throwEvery: 3.2,
     errands: ['trafika', 'šalter'], minions: 0,
     look: { shirt: C.grayD, pants: C.grayD, tie: C.red, belly: true, glasses: true, mustache: true, hat: 'fedora', carry: 'moneybag', scale: 1.25 },
@@ -127,10 +127,17 @@ export const ENDING = [
   'Đura je odbranio državu.',
   'Načelnik je predložio orden.',
   'Država je odobrila bon za burek.',
-  'Kum Ofšor i dalje tvrdi da "ima ljude".',
+  'Kum {kum} i dalje tvrdi da "ima ljude".',
   'Špijun piše memoare u zatvoru u Zabeli.',
   'KRAJ... ili možda samo pauza za kafu.',
 ];
+
+// nadimak kuma se bira jednom po partiji
+export const KUM_NAMES = ['Ofšor', 'Saša', 'Ćoška', 'Koferče', 'Acika'];
+
+export function fill(text, vars) {
+  return text.replace(/\{(\w+)\}/g, (m, k) => vars[k] ?? m);
+}
 
 export function pick(arr) {
   return arr[(Math.random() * arr.length) | 0];

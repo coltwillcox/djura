@@ -2,6 +2,7 @@ import * as THREE from 'three';
 
 const $ = (id) => document.getElementById(id);
 const v = new THREE.Vector3();
+const BUBBLE_TIME = 1.8; // množilac trajanja oblačića
 
 // portret načelnika kao pikselni SVG
 const PORTRAIT = [
@@ -94,7 +95,9 @@ export class UI {
     el.className = 'bubble ' + cls;
     el.textContent = text;
     this.bubbleLayer.appendChild(el);
-    this.bubbles.push({ target, el, t: dur, h: target.height ?? 2.3 });
+    // duže stoji, i nikad kraće nego što treba da se pročita
+    const t = Math.max(dur * BUBBLE_TIME, 1.6 + text.length * 0.07);
+    this.bubbles.push({ target, el, t, h: target.height ?? 2.3 });
   }
 
   floatText(pos, text, cls = '') {
@@ -119,7 +122,8 @@ export class UI {
       const b = this.bubbles[i];
       b.t -= dt;
       if (b.rise !== undefined) b.rise += dt * 1.5;
-      if (b.t <= 0 || b.target.dead) {
+      // oblačić ostaje i kad lik nestane (uhapšen/ukrcan), na mestu gde je bio
+      if (b.t <= 0) {
         b.el.remove();
         this.bubbles.splice(i, 1);
         continue;

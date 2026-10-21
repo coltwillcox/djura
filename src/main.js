@@ -12,7 +12,7 @@ import { Audio } from './audio.js';
 import { UI } from './ui.js';
 import { World, GATES } from './world.js';
 import { Player, Civilian, Criminal, Boss } from './entities.js';
-import { LEVELS, BOSSES, LINES, DESTINATIONS, ENDING, pick } from './levels.js';
+import { LEVELS, BOSSES, LINES, DESTINATIONS, ENDING, KUM_NAMES, fill, pick } from './levels.js';
 import { C } from './palette.js';
 import { mat, makeBurek, makeWhistle, makeMoney, blobShadow } from './models.js';
 
@@ -57,6 +57,7 @@ class Game {
     this.highscore = store.get('djura-hi', 0);
     this.unlocked = store.get('djura-unlocked', 0);
     this.menuSel = 0;
+    this.kum = pick(KUM_NAMES);
 
     const unlock = () => this.audio.unlock();
     window.addEventListener('keydown', unlock);
@@ -122,8 +123,8 @@ class Game {
     this.menuItems = null;
     this.menuSel = 0;
     switch (act) {
-      case 'new': this.score = 0; this.startLevel(0); break;
-      case 'continue': this.score = 0; this.startLevel(this.unlocked); break;
+      case 'new': this.score = 0; this.kum = pick(KUM_NAMES); this.startLevel(0); break;
+      case 'continue': this.score = 0; this.kum = pick(KUM_NAMES); this.startLevel(this.unlocked); break;
       case 'controls': this.controlsScreen(); break;
       case 'mute': this.audio.toggleMute(); this.titleScreen(); break;
       case 'title': this.titleScreen(); break;
@@ -163,7 +164,7 @@ class Game {
     this.audio.playMusic('title');
     this.menu([['title', 'GLAVNI MENI']], `
       <h1 class="gold">ČESTITAMO!</h1>
-      <div class="ending">${ENDING.map((l, i) => `<p style="animation-delay:${i * 0.8}s">${l}</p>`).join('')}</div>
+      <div class="ending">${ENDING.map((l, i) => `<p style="animation-delay:${i * 0.8}s">${fill(l, this)}</p>`).join('')}</div>
       <div class="big">POENI ${String(this.score).padStart(6, '0')}</div>
       <div class="hi">REKORD ${String(this.highscore).padStart(6, '0')}</div>`, '', 'ending');
   }
@@ -191,9 +192,11 @@ class Game {
     this.clearLevel();
     this.levelIdx = idx;
     this.levelStartScore = this.score;
-    const L = LEVELS[idx];
+    const L = { ...LEVELS[idx] };
+    L.name = fill(L.name, this);
+    L.briefing = L.briefing.map((t) => fill(t, this));
     this.cfg = L;
-    this.bossDef = L.boss ? BOSSES[L.boss] : null;
+    this.bossDef = L.boss ? { ...BOSSES[L.boss], name: fill(BOSSES[L.boss].name, this) } : null;
     this.stats = {
       arrests: 0, escapes: 0, complaints: 0, spawned: 0,
       total: this.bossDef ? this.bossDef.minions : L.criminals,
