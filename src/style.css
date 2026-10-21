@@ -269,6 +269,18 @@ html, body {
 .logo .l1 { color: var(--cyan); font-size: calc(16 * var(--u)); }
 .logo .l2 { color: var(--yellow); animation: wobble 1.2s steps(3) infinite; }
 .logo .l3 { color: var(--white); }
+/* Press Start 2P ima jedva vidljivu crtu na Đ — crtamo je sami */
+.logo .dj { position: relative; display: inline-block; }
+.logo .dj::after {
+  content: '';
+  position: absolute;
+  left: -0.125em;
+  top: 0.375em;
+  width: 0.375em;
+  height: 0.125em;
+  background: currentColor;
+  box-shadow: 0 calc(2 * var(--u)) 0 var(--red);
+}
 @keyframes wobble { 50% { transform: translateY(calc(-2 * var(--u))); } }
 
 .menu { display: flex; flex-direction: column; gap: calc(4 * var(--u)); align-items: center; }

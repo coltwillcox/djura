@@ -1,4 +1,4 @@
-# Đura, blokiraj aerodrom!
+# Đuro, blokiraj aerodrom!
 
 Humoristična 3D browser igra u stilu Sega Mega Drive-a, po motivima filma *Balkanski špijun* (1984).
 

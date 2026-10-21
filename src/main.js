@@ -1,4 +1,5 @@
 import '@fontsource/press-start-2p/latin-400.css';
+import '@fontsource/press-start-2p/latin-ext-400.css';
 import '@fontsource/pixelify-sans/latin-400.css';
 import '@fontsource/pixelify-sans/latin-ext-400.css';
 import '@fontsource/pixelify-sans/latin-700.css';
@@ -86,7 +87,7 @@ class Game {
     items.push(['controls', 'KONTROLE'], ['mute', this.audio.muted ? 'ZVUK: ISKLJUČEN' : 'ZVUK: UKLJUČEN']);
     this.menu(items, `
       <div class="logo">
-        <div class="l1">ĐURA,</div>
+        <div class="l1"><span class="dj" aria-label="Đ">D</span>URO,</div>
         <div class="l2">BLOKIRAJ</div>
         <div class="l3">AERODROM!</div>
       </div>`, `
@@ -861,7 +862,7 @@ class Game {
 }
 
 Promise.all([
-  document.fonts.load('8px "Press Start 2P"'),
+  document.fonts.load('8px "Press Start 2P"', 'Đ'),
   document.fonts.load('10px "Pixelify Sans"', 'ČĆŠŽĐ'),
   document.fonts.load('bold 10px "Pixelify Sans"', 'ČĆŠŽĐ'),
 ]).catch(() => {}).finally(() => {
