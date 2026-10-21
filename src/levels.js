@@ -113,12 +113,51 @@ export const DESTINATIONS = [
 ];
 
 export const LINES = {
-  arrest: ['Stoj! Policija!', 'Pasoš na uvid!', 'Gde si krenuo, burazeru?', 'U ime zakona!', 'Lisice, izvoli!', 'Nema leta danas!'],
-  crimArrested: ['Nisam ja, brate!', 'Ma, znam ja tvog načelnika!', 'Samo sam išao do trafike!', 'Ovo je ručni prtljag!', 'Imam alibi! Mama će reći!', 'Pa nisam ni stigao do duty free-a!'],
-  civArrested: ['Sine, ja sam baba!', 'Ja samo idem na more!', 'Imam kartu, evo!', 'Žaliću se u novine!', 'Zvaću ombudsmana!', 'Ja sam pevač, bre!'],
-  spooked: ['Pandur!', 'Beži!', 'Ajmo, ajmo!', 'Joj!'],
-  debeliHit: ['Ne dam šteku!', 'Teško je, Đuro!', 'Još malo!'],
-  burek: ['BUREK! Snaga naroda!', 'Sa sirom! Brzina +', 'Burek i jogurt!'],
+  arrest: [
+    'Stoj! Policija!', 'Pasoš na uvid!', 'Gde si krenuo, burazeru?', 'U ime zakona!', 'Lisice, izvoli!', 'Nema leta danas!',
+    'Ukrcavanje otkazano!', 'Ruke da ti vidim!', 'Ajde, polako, bez cirkusa.', 'Imaš pravo da ćutiš. Iskoristi ga.',
+    'Odredište: zatvor!', 'Jedina destinacija ti je Zabela!', 'Kipar? Može. Ćelija Kipar.', 'Prtljag ide sa mnom!',
+    'Let je pomeren za 5 do 10 godina.', 'Čekiranje završeno, burazeru!', 'Nisi prošao kontrolu!', 'Đura te vidi!',
+    'E, nećeš ti meni!', 'Pa gde ćeš sad, bre?', 'Biznis klasa: marica!', 'Duty free je zatvoren za tebe!',
+    'Pogrešan izlaz, prijatelju!', 'Zovi advokata, zovi i mamu!',
+  ],
+  crimArrested: [
+    'Nisam ja, brate!', 'Ma, znam ja tvog načelnika!', 'Samo sam išao do trafike!', 'Ovo je ručni prtljag!', 'Imam alibi! Mama će reći!', 'Pa nisam ni stigao do duty free-a!',
+    'To nisu moje pare, to je od kume!', 'Ja samo pratim ujaka do aviona!', 'Zamena identiteta, majke mi!', 'Imam kartu za povratak, časna reč!',
+    'Ma to su pare za operaciju... babinu!', 'Ja sam na službenom putu!', 'Kofer nije moj, našao sam ga!', 'Dobro, ali bez slikanja!',
+    'Pa javi bar mojima da kasnim!', 'Platio sam parking, zašto me hapsiš?!', 'Ma šalio sam se, nisam ni hteo da letim!',
+    'Ja se ovde samo grejem!', 'Đuro, pa zajedno smo išli u školu!', 'Mogu bar da završim burek?', 'Ovo je greška u sistemu!',
+    'Advokat će te razvući po sudovima!', 'Samo sam tražio WC!', 'Mislio sam da je ovo autobuska!',
+  ],
+  civArrested: [
+    'Sine, ja sam baba!', 'Ja samo idem na more!', 'Imam kartu, evo!', 'Žaliću se u novine!', 'Zvaću ombudsmana!', 'Ja sam pevač, bre!',
+    'Pa ja sam turista!', 'Gospodine, ja sam učiteljica!', 'Idem na svadbu u Beč!', 'Ovo ide na društvene mreže!',
+    'Ja sam samo došao da ispratim tetku!', 'Zakasniću na let zbog vas!', 'Ja plaćam porez, da znate!',
+    'Snimam vas telefonom!', 'Ja sam penzioner, nemam ni za kafu!', 'Poznajem vašeg komandira!',
+    'Imam dete u kolicima ovde negde!', 'Jao, pa šta sam ja uradio?!', 'Ja radim u pekari, bre!',
+    'Moja mama će ovo da čuje!', 'Pustite me, kasnim na čarter!', 'Ja sam samo kupovao suvenire!',
+    'Pa ja nemam ni pasoš!', 'Ovo je kršenje ljudskih prava!',
+  ],
+  spooked: [
+    'Pandur!', 'Beži!', 'Ajmo, ajmo!', 'Joj!',
+    'Murija!', 'Đura ide!', 'Brže, brže!', 'Opa!', 'Nisam ja!', 'Kidaj!',
+    'Majko mila!', 'Uh, gotov sam!', 'Gde je izlaz?!', 'Pali!', 'Ne gledaj ga!',
+    'Pravi se lud!', 'Zbogom, Srbijo!', 'Samo polako...', 'Ups!', 'E, sad je gotovo!',
+  ],
+  debeliHit: [
+    'Ne dam šteku!', 'Teško je, Đuro!', 'Još malo!',
+    'Ne dam kofer, tu mi je sve!', 'Uh, pa ja sam krupna kost!', 'Ne možeš me pomeriti!',
+    'Ovo je sve za ličnu upotrebu!', 'Polako, imam kilažu!', 'Šteka je deklarisana, majke mi!',
+    'Ne guraj, prosuće se cigare!', 'Joj, pukla su mi dugmad!', 'Ja sam samo debeo, nisam kriv!',
+    'Platiću carinu! Sutra!', 'Ne dam, pa makar me nosio!', 'Uh, gde mi je pumpica!',
+  ],
+  burek: [
+    'BUREK! Snaga naroda!', 'Sa sirom! Brzina +', 'Burek i jogurt!',
+    'Sa mesom! Turbo režim!', 'Doručak šampiona!', 'Još je topao!', 'Ovo je bolje od kafe!',
+    'Masnoća = brzina!', 'Burek u pola tri ujutru? Može!', 'Nema predaje dok ima bureka!',
+    'Jedna kora, hiljadu snaga!', 'Đura je napunjen!', 'Ko jede burek, taj stiže lopova!',
+    'Mmm... sad mogu sve!', 'Gde je jogurt?! ...nema veze, trčim!',
+  ],
   whistle: ['FIJUUU!', 'Stoj svi!'],
   missed: ['Promašio!', 'Ništa...'],
 };
