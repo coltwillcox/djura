@@ -213,11 +213,13 @@ export class World {
     g.add(pk);
     this.addObstacle(15.8, 10.3, 2, 1.5);
 
-    // veliki natpis
-    const title = makeTextSign('AERODROM BEOGRAD', { bg: mdCss(0, 0, 3), fg: mdCss(7, 7, 7), texel: 0.15 });
-    title.position.set(0, 6.6, WALL_Z - 0.3);
-    title.rotation.x = -0.3;
-    g.add(title);
+    // veliki natpis, podeljen između natpisa izlaza da bi bio u kadru
+    for (const [x, text] of [[-5.5, 'AERODROM'], [5.5, 'BEOGRAD']]) {
+      const t = makeTextSign(text, { bg: mdCss(0, 0, 3), fg: mdCss(7, 7, 7), border: mdCss(7, 7, 0), texel: 0.12 });
+      t.position.set(x, 3.45 + t.userData.size.h / 2, WALL_Z + 0.35);
+      t.rotation.x = -0.5;
+      g.add(t);
+    }
   }
 
   buildPlanes() {
