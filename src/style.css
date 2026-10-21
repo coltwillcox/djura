@@ -297,6 +297,8 @@ html, body {
   text-shadow: var(--u) var(--u) 0 var(--black);
 }
 .menu button.sel, .menu button:hover { color: var(--yellow); }
+.lvl-arrow { color: var(--cyan); padding: 0 calc(3 * var(--u)); }
+.lvl-arrow.off { color: rgb(87, 87, 87); }
 
 table.keys, table.stats { border-collapse: collapse; margin: 0 auto calc(8 * var(--u)); }
 table.keys td, table.stats td { padding: var(--u) calc(5 * var(--u)); text-align: left; }

@@ -56,6 +56,7 @@ class Game {
     this.score = 0;
     this.highscore = store.get('djura-hi', 0);
     this.unlocked = store.get('djura-unlocked', 0);
+    this.continueLevel = this.unlocked;
     this.menuSel = 0;
     this.kum = pick(KUM_NAMES);
 
@@ -84,7 +85,7 @@ class Game {
     this.ui.showHud(false);
     this.audio.playMusic('title');
     const items = [['new', 'NOVA IGRA']];
-    if (this.unlocked > 0) items.push(['continue', `NASTAVI (NIVO ${this.unlocked + 1})`]);
+    if (this.unlocked > 0) items.push(['continue', '']);
     items.push(['controls', 'KONTROLE'], ['mute', this.audio.muted ? 'ZVUK: ISKLJUČEN' : 'ZVUK: UKLJUČEN']);
     this.menu(items, `
       <div class="logo">
@@ -105,13 +106,33 @@ class Game {
 
   renderMenu() {
     const btns = this.menuItems.map(([act, label], i) =>
-      `<button data-act="${act}" class="${i === this.menuSel ? 'sel' : ''}">${i === this.menuSel ? '▶ ' : ''}${label}</button>`).join('');
+      `<button data-act="${act}" class="${i === this.menuSel ? 'sel' : ''}">${i === this.menuSel ? '▶ ' : ''}${act === 'continue' ? this.continueLabel() : label}</button>`).join('');
     this.ui.screen(`${this.menuHead}<div class="menu">${btns}</div>${this.menuFoot}`, this.menuCls);
+  }
+
+  // NASTAVI: levo/desno bira bilo koji već otključan nivo
+  continueLabel() {
+    const lvl = this.continueLevel;
+    const prev = `<span data-act="lvl-prev" class="lvl-arrow${lvl > 0 ? '' : ' off'}">&lt;</span>`;
+    const next = `<span data-act="lvl-next" class="lvl-arrow${lvl < this.unlocked ? '' : ' off'}">&gt;</span>`;
+    return `NASTAVI ${prev} NIVO ${lvl + 1} ${next}`;
+  }
+
+  changeContinueLevel(d) {
+    const lvl = Math.max(0, Math.min(this.unlocked, this.continueLevel + d));
+    if (lvl === this.continueLevel) return;
+    this.continueLevel = lvl;
+    this.audio.sfx('blip');
+    this.renderMenu();
   }
 
   menuInput() {
     if (!this.menuItems) return;
     const n = this.menuItems.length;
+    if (this.menuItems[this.menuSel][0] === 'continue') {
+      if (this.input.hit('left')) this.changeContinueLevel(-1);
+      if (this.input.hit('right')) this.changeContinueLevel(1);
+    }
     if (this.input.hit('up')) { this.menuSel = (this.menuSel + n - 1) % n; this.audio.sfx('blip'); this.renderMenu(); }
     if (this.input.hit('down')) { this.menuSel = (this.menuSel + 1) % n; this.audio.sfx('blip'); this.renderMenu(); }
     if (this.input.hit('confirm') || this.input.hit('arrest')) this.menuAction(this.menuItems[this.menuSel][0]);
@@ -119,12 +140,18 @@ class Game {
 
   menuAction(act) {
     this.audio.unlock();
+    if (act === 'lvl-prev' || act === 'lvl-next') {
+      this.menuSel = this.menuItems.findIndex(([a]) => a === 'continue');
+      this.changeContinueLevel(act === 'lvl-prev' ? -1 : 1);
+      this.renderMenu();
+      return;
+    }
     this.audio.sfx('blip');
     this.menuItems = null;
     this.menuSel = 0;
     switch (act) {
       case 'new': this.score = 0; this.kum = pick(KUM_NAMES); this.startLevel(0); break;
-      case 'continue': this.score = 0; this.kum = pick(KUM_NAMES); this.startLevel(this.unlocked); break;
+      case 'continue': this.score = 0; this.kum = pick(KUM_NAMES); this.startLevel(this.continueLevel); break;
       case 'controls': this.controlsScreen(); break;
       case 'mute': this.audio.toggleMute(); this.titleScreen(); break;
       case 'title': this.titleScreen(); break;
@@ -780,6 +807,7 @@ class Game {
     this.saveHigh();
     this.unlocked = Math.max(this.unlocked, Math.min(LEVELS.length - 1, this.levelIdx + 1));
     store.set('djura-unlocked', this.unlocked);
+    this.continueLevel = this.unlocked;
     this.audio.stopMusic();
     this.audio.sfx('win');
     this.ui.showHud(false);
