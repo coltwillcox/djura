@@ -232,7 +232,8 @@ html, body {
 .d-body { flex: 1; position: relative; }
 .d-name { color: var(--yellow); font-weight: 700; margin-bottom: calc(3 * var(--u)); }
 .d-text { line-height: 1.4; min-height: 2.8em; }
-.d-next { position: absolute; right: 0; bottom: 0; color: var(--yellow); animation: blink 0.5s steps(2) infinite; }
+.d-next { position: absolute; right: 0; bottom: 0; color: var(--yellow); line-height: 0; animation: blink 0.5s steps(2) infinite; }
+.d-next svg { width: calc(8 * var(--u)); height: calc(5 * var(--u)); display: block; }
 
 /* ---------- ekrani ---------- */
 #screen {
