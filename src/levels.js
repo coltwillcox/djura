@@ -39,7 +39,7 @@ export const LEVELS = [
       'Lopovi su se maskirali u obične turiste.',
       'Prati ko ispušta pare iz džepa. Ono, to je sumnjivo...',
       '...u Srbiji niko nema višak para.',
-      'I čuvaj se šverceru. Debeo je, ali ne pušta lako.',
+      'I čuvaj se švercera. Debeo je, ali ne pušta lako.',
     ],
     criminals: 10, types: { sitan: 1, maskiran: 3, debeli: 1 }, interval: 3.6, concurrent: 4,
     civilians: 12, maxEscapes: 3, speed: 1.08,
